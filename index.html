@@ -1,17 +1,100 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Claim your free reward now! Join thousands of winners. No credit card required. Instant delivery." />
-    <title>Claim Your FREE Reward Now!</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="/assets/index-DTYbwhaz.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-DVLzmYgC.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE REWARDS VAULT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .pulse-btn:hover { transform: scale(1.02); transition: all 0.2s ease; }
+        @keyframes pulse-custom {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+        .pulse-anim { animation: pulse-custom 2s infinite; }
+        .glass-card { background: rgba(24, 24, 27, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(63, 63, 70, 0.5); }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen p-4 flex flex-col items-center">
+
+    <header class="text-center my-10 w-full max-w-md">
+        <h1 class="text-3xl font-extrabold tracking-tighter text-white mb-2">THE REWARDS VAULT</h1>
+        <p class="text-zinc-400 text-sm uppercase tracking-widest font-semibold">Verified Drops & Digital Assets - May 2026</p>
+    </header>
+
+    <main class="w-full max-w-md space-y-6">
+        
+        <div class="glass-card rounded-2xl p-6 transition-all">
+            <div class="flex justify-between items-start mb-4">
+                <span class="bg-blue-600 text-[10px] font-bold px-2 py-1 rounded uppercase">Hot Offer</span>
+                <span class="text-zinc-500 text-xs">US ONLY</span>
+            </div>
+            <h3 class="text-xl font-bold mb-1">Jackpota Casino Access</h3>
+            <p class="text-zinc-400 text-sm mb-6">Claim your initial entry credits. (All Devices)</p>
+            <a href="https://www.lnksforyou.com/view.php?id=5544745&pub=3206303" target="_blank" 
+               class="pulse-btn pulse-anim block w-full bg-blue-600 text-white text-center py-4 rounded-xl font-bold text-lg shadow-lg">
+                Claim Credits
+            </a>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6">
+            <div class="flex justify-between items-start mb-4">
+                <span class="bg-purple-600 text-[10px] font-bold px-2 py-1 rounded uppercase">Live Giveaway</span>
+            </div>
+            <h3 class="text-xl font-bold mb-1">Whatnot Gifting Entry</h3>
+            <p class="text-zinc-400 text-sm mb-6">Join the live giveaway stream and claim your drop.</p>
+            <a href="https://www.lnksforyou.com/view.php?id=5543848&pub=3206303" target="_blank" 
+               class="pulse-btn pulse-anim block w-full bg-purple-600 text-white text-center py-4 rounded-xl font-bold text-lg shadow-lg">
+                Enter Stream
+            </a>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6">
+            <div class="flex justify-between items-start mb-4">
+                <span class="bg-emerald-600 text-[10px] font-bold px-2 py-1 rounded uppercase">Instant Cash</span>
+            </div>
+            <h3 class="text-xl font-bold mb-1">MoneyLion Cash Rewards</h3>
+            <p class="text-zinc-400 text-sm mb-6">Sign up and link your account to unlock current balance.</p>
+            <a href="https://www.lnksforyou.com/view.php?id=5543847&pub=3206303" target="_blank" 
+               class="pulse-btn pulse-anim block w-full bg-emerald-600 text-white text-center py-4 rounded-xl font-bold text-lg shadow-lg">
+                Unlock Balance
+            </a>
+        </div>
+
+    </main>
+
+    <div id="toast" class="fixed bottom-6 right-6 left-6 md:left-auto md:w-80 glass-card p-4 rounded-xl shadow-2xl translate-y-32 transition-all duration-500 flex items-center gap-3">
+        <div class="h-2 w-2 bg-emerald-500 rounded-full animate-ping"></div>
+        <p id="toast-text" class="text-xs font-medium text-zinc-300"></p>
+    </div>
+
+    <script>
+        const activities = [
+            "User @Felicia just claimed $25 on MoneyLion",
+            "User @Umar just entered Jackpota Sweepstakes",
+            "User @Adam_M. unlocked $50 Whatnot credit",
+            "User @Sarah99 just cashed out on MoneyLion",
+            "New entry: @Kabal secured 500 Credits"
+        ];
+
+        const toast = document.getElementById('toast');
+        const toastText = document.getElementById('toast-text');
+
+        function showToast() {
+            const randomActivity = activities[Math.floor(Math.random() * activities.length)];
+            toastText.innerText = randomActivity;
+            toast.classList.remove('translate-y-32');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-32');
+            }, 3500);
+        }
+
+        setInterval(showToast, 6000);
+        setTimeout(showToast, 2000); // Initial start
+    </script>
+</body>
 </html>
