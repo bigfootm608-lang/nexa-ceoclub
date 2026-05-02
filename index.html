@@ -66,35 +66,77 @@
 
     </main>
 
+    <a href="mailto:ceoclub.hq@gmail.com?subject=Inquiry: The Rewards Vault" class="fixed bottom-6 left-6 z-50 flex items-center gap-2 bg-zinc-900 border border-zinc-700 px-4 py-3 rounded-full shadow-2xl hover:bg-zinc-800 transition-all active:scale-95 group">
+        <div class="h-2 w-2 bg-blue-500 rounded-full group-hover:animate-pulse"></div>
+        <span class="text-[10px] font-bold tracking-tight text-zinc-300 uppercase">Message CEOCLUB</span>
+    </a>
+
     <div id="toast" class="fixed bottom-6 right-6 left-6 md:left-auto md:w-80 glass-card p-4 rounded-xl shadow-2xl translate-y-32 transition-all duration-500 flex items-center gap-3">
         <div class="h-2 w-2 bg-emerald-500 rounded-full animate-ping"></div>
-        <p id="toast-text" class="text-xs font-medium text-zinc-300"></p>
+        <p id="toast-text" class="text-[11px] font-medium text-zinc-300"></p>
     </div>
 
     <script>
-        const activities = [
-            "User @Felicia just claimed $25 on MoneyLion",
-            "User @Umar just entered Jackpota Sweepstakes",
-            "User @Adam_M. unlocked $50 Whatnot credit",
-            "User @Sarah99 just cashed out on MoneyLion",
-            "New entry: @Kabal secured 500 Credits"
+        const userPool = [
+            { name: "Lukas Schmidt", handle: "lks_schmidt" },
+            { name: "Emma Wilson", handle: "em_wilson22" },
+            { name: "Matteo Rossi", handle: "m_rossi_it" },
+            { name: "Sophie Dubois", handle: "soph_dubois" },
+            { name: "Erik Lindgren", handle: "erik_l88" },
+            { name: "Julian H.", handle: "jules_h" },
+            { name: "Hannah Vogel", handle: "h_vogel_de" },
+            { name: "David Miller", handle: "miller_d" },
+            { name: "Elena S.", handle: "elena_silver" },
+            { name: "Marc Baumann", handle: "baumann_m" },
+            { name: "Oliver P.", handle: "oliver_p_uk" },
+            { name: "Clara Müller", handle: "clara_m" },
+            { name: "Thomas W.", handle: "tw_pro" },
+            { name: "Isabella K.", handle: "bella_k_ny" },
+            { name: "Niklas Hofmann", handle: "n_hofmann" },
+            { name: "Sarah Jones", handle: "sj_rewards" },
+            { name: "Lars Nielsen", handle: "lars_n_dk" },
+            { name: "Andreas Kohl", handle: "a_kohl" },
+            { name: "Julia Schneider", handle: "j_schneider" },
+            { name: "B. Livingston", handle: "b_livingston_us" }
+        ];
+
+        const actions = [
+            "secured a $25 MoneyLion reward",
+            "registered for Jackpota Casino credits",
+            "entered the Whatnot gifting giveaway",
+            "verified a $10 MoneyLion cash drop",
+            "unlocked initial Jackpota entry credits",
+            "joined the Whatnot live stream event"
         ];
 
         const toast = document.getElementById('toast');
         const toastText = document.getElementById('toast-text');
 
         function showToast() {
-            const randomActivity = activities[Math.floor(Math.random() * activities.length)];
-            toastText.innerText = randomActivity;
+            const user = userPool[Math.floor(Math.random() * userPool.length)];
+            const action = actions[Math.floor(Math.random() * actions.length)];
+            
+            toastText.innerHTML = `<span class="text-white font-bold">${user.name}</span> <span class="text-zinc-500">(@${user.handle})</span> ${action}`;
+            
             toast.classList.remove('translate-y-32');
             
             setTimeout(() => {
                 toast.classList.add('translate-y-32');
-            }, 3500);
+            }, 4500);
         }
 
-        setInterval(showToast, 6000);
-        setTimeout(showToast, 2000); // Initial start
+        function scheduleNext() {
+            // Natural random delay between 14 and 22 seconds
+            const randomDelay = Math.floor(Math.random() * (22000 - 14000 + 1) + 14000);
+            setTimeout(() => {
+                showToast();
+                scheduleNext();
+            }, randomDelay);
+        }
+
+        // Start initial cycle after 6 seconds
+        setTimeout(scheduleNext, 6000);
     </script>
 </body>
 </html>
+
