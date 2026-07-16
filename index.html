@@ -3,156 +3,565 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE REWARDS VAULT</title>
+    <title>Brandon Mason Show - Exclusive Offers</title>
+    
+    <!-- SEO & Social Media Meta Tags -->
+    <meta name="description" content="Unlock exclusive Brandon Mason Show offers personalized for your location. Limited time rewards.">
+    <meta name="keywords" content="Brandon Mason Show, exclusive offers, rewards, deals">
+    <meta name="author" content="Brandon Mason Show">
+    
+    <!-- Open Graph for Facebook, LinkedIn, etc. -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Brandon Mason Show - Exclusive Offers">
+    <meta property="og:description" content="Unlock exclusive rewards personalized for your location. Brandon Mason Show viewers only.">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630?text=Brandon+Mason+Show+Exclusive+Offers">
+    <meta property="og:url" content="">
+    <meta property="og:site_name" content="Brandon Mason Show">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Brandon Mason Show - Exclusive Offers">
+    <meta name="twitter:description" content="Unlock exclusive rewards. Personalized by location. BMS viewers only.">
+    <meta name="twitter:image" content="https://via.placeholder.com/1200x630?text=Brandon+Mason+Show+Exclusive+Offers">
+    <meta name="twitter:creator" content="@brandonmasonshow">
+    
+    <!-- Instagram & Pinterest -->
+    <meta property="pinterest:media" content="https://via.placeholder.com/1000x1000?text=Brandon+Mason+Show">
+    <meta property="pinterest:description" content="Exclusive Brandon Mason Show offers">
+    
+    <!-- Mobile Optimization -->
+    <meta name="theme-color" content="#0f3460">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' fill='%23ffd700'>▶</text></svg>">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Geo-location & IP detection API -->
+    <script>
+        window.addEventListener('load', async () => {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                window.userGeo = {
+                    country: data.country_code,
+                    state: data.region,
+                    city: data.city,
+                    ip: data.ip
+                };
+                window.dispatchEvent(new Event('geoReady'));
+            } catch (e) {
+                console.log('Geo detection fallback');
+                window.userGeo = { country: 'US', state: 'Unknown', city: 'Unknown' };
+                window.dispatchEvent(new Event('geoReady'));
+            }
+        });
+    </script>
+    
     <style>
         body { font-family: 'Inter', sans-serif; }
+        
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Mobile-first responsive utilities */
+        @media (max-width: 640px) {
+            body { font-size: 14px; }
+            .header-main { font-size: 24px; }
+        }
+        
         .pulse-btn:hover { transform: scale(1.02); transition: all 0.2s ease; }
+        .pulse-btn:active { transform: scale(0.98); }
+        
         @keyframes pulse-custom {
             0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
             70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
             100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
         }
+        
         .pulse-anim { animation: pulse-custom 2s infinite; }
-        .glass-card { background: rgba(24, 24, 27, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(63, 63, 70, 0.5); }
+        
+        .glass-card { 
+            background: rgba(24, 24, 27, 0.8); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid rgba(63, 63, 70, 0.5); 
+        }
+        
+        /* Content Locker Styles */
+        .locker-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z: 100;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .locker-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .locker-modal {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 2px solid #0f3460;
+            border-radius: 16px;
+            padding: 40px 30px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+            margin: auto;
+        }
+        
+        @media (max-width: 640px) {
+            .locker-modal {
+                padding: 30px 20px;
+            }
+        }
+        
+        .locker-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        
+        .lock-task {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid #ffd700;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 15px 0;
+            font-size: 13px;
+            color: #fff;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+        
+        .lock-task:active {
+            transform: scale(0.98);
+        }
+        
+        .lock-task.completed {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: #22c55e;
+        }
+        
+        .lock-task.completed::before {
+            content: "✓ ";
+            color: #22c55e;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        .task-checkbox {
+            accent-color: #3b82f6;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+        
+        .task-label {
+            cursor: pointer;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        /* Geo-badge */
+        .geo-badge {
+            display: inline-block;
+            background: #0f3460;
+            color: #ffd700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 12px;
+        }
+        
+        @media (max-width: 640px) {
+            .geo-badge {
+                font-size: 11px;
+                padding: 5px 12px;
+            }
+        }
+        
+        /* Offer card improvements */
+        .offer-card {
+            transition: all 0.3s ease;
+        }
+        
+        .offer-card:active {
+            transform: scale(0.98);
+        }
+        
+        @media (max-width: 640px) {
+            .offer-card {
+                margin: 0 -4px;
+            }
+        }
+        
+        /* Button improvements for mobile */
+        button, a.cta-link {
+            -webkit-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Toast positioning for mobile */
+        @media (max-width: 768px) {
+            #toast {
+                left: 12px !important;
+                right: 12px !important;
+                width: auto !important;
+                max-width: none !important;
+            }
+        }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-100 min-h-screen p-4 flex flex-col items-center">
 
+    <!-- CONTENT LOCKER -->
+    <div id="contentLocker" class="locker-overlay">
+        <div class="locker-modal">
+            <div class="locker-icon">🔐</div>
+            <h2 style="color: #ffd700; font-size: 24px; font-weight: bold; margin-bottom: 15px;">
+                Unlock Exclusive Offers
+            </h2>
+            <p style="color: #aaa; font-size: 14px; margin-bottom: 20px; line-height: 1.5;">
+                Brandon Mason Show viewers get premium deals. Complete these quick tasks to see offers just for you.
+            </p>
+            
+            <div id="lockerTasks" style="text-align: left; margin-bottom: 20px;">
+                <div class="lock-task">
+                    <label class="task-label">
+                        <input type="checkbox" class="task-checkbox" data-task="viewed" aria-label="Mark as watched"> 
+                        <span>Watch our intro video (30 sec)</span>
+                    </label>
+                </div>
+                <div class="lock-task">
+                    <label class="task-label">
+                        <input type="checkbox" class="task-checkbox" data-task="follow" aria-label="Mark as followed"> 
+                        <span>Follow Brandon Mason on social</span>
+                    </label>
+                </div>
+                <div class="lock-task">
+                    <label class="task-label">
+                        <input type="checkbox" class="task-checkbox" data-task="consent" aria-label="Allow location access"> 
+                        <span>Allow location access for personalized offers</span>
+                    </label>
+                </div>
+            </div>
+
+            <button id="unlockBtn" 
+                    class="w-full bg-zinc-700 text-zinc-400 py-3 rounded-lg font-bold cursor-not-allowed opacity-50 transition-all text-base"
+                    disabled
+                    aria-label="Unlock button">
+                Complete All Tasks to Unlock
+            </button>
+            <p style="color: #666; font-size: 11px; margin-top: 15px;">
+                ⏱️ Takes less than 2 minutes
+            </p>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
     <header class="text-center my-10 w-full max-w-md">
-        <h1 class="text-3xl font-extrabold tracking-tighter text-white mb-2">THE REWARDS VAULT</h1>
-        <p class="text-zinc-400 text-sm uppercase tracking-widest font-semibold">Verified Drops & Digital Assets - May 2026</p>
+        <h1 class="header-main text-3xl md:text-4xl font-extrabold tracking-tighter text-white mb-2">
+            EXCLUSIVE OFFERS FOR BRANDON MASON VIEWERS
+        </h1>
+        <p class="text-zinc-400 text-xs md:text-sm uppercase tracking-widest font-semibold">
+            Personalized deals powered by your location
+        </p>
+        <div id="geoInfo" class="geo-badge" style="display: none;">
+            📍 <span id="geoText"></span>
+        </div>
     </header>
 
     <main class="w-full max-w-md space-y-6">
-        
-        <div class="glass-card rounded-2xl p-6 transition-all">
-            <div class="flex justify-between items-start mb-4">
-                <span class="bg-blue-600 text-[10px] font-bold px-2 py-1 rounded uppercase">Hot Offer</span>
-                <span class="text-zinc-500 text-xs">US ONLY</span>
-            </div>
-            <h3 class="text-xl font-bold mb-1">Jackpota Casino Access</h3>
-            <p class="text-zinc-400 text-sm mb-6">Claim your initial entry credits. (All Devices)</p>
-            <a href="https://www.lnksforyou.com/view.php?id=5544745&pub=3206303" target="_blank" 
-               class="pulse-btn pulse-anim block w-full bg-blue-600 text-white text-center py-4 rounded-xl font-bold text-lg shadow-lg">
-
-<section style="padding: 40px 20px; background: #1a1a1a; color: #fff; border-radius: 12px; margin: 20px 0;">
-    <h2 style="color: #ffd700;">Why The Rewards Vault?</h2>
-    <p style="line-height: 1.6; color: #cccccc;">
-        We leverage deep industry expertise in digital marketing to curate only the highest-performing assets. 
-        Our team monitors the digital landscape 24/7 to ensure every entry is <strong>verified, active, and high-value.</strong> 
-        Stop searching and start claiming.
-    </p>
-</section>
-
-<section style="padding: 40px 20px; background: #000; border: 1px solid #333; border-radius: 12px;">
-    <h2 style="text-align: center; color: #fff; margin-bottom: 30px;">How To Claim Your Rewards</h2>
-    <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px;">
-        
-        <div style="flex: 1; min-width: 200px; text-align: center;">
-            <div style="font-size: 2rem; color: #ffd700; margin-bottom: 10px;">01</div>
-            <h3 style="color: #fff;">Select</h3>
-            <p style="color: #aaa;">Choose a verified drop from our live vault list.</p>
+        <!-- Dynamic Offers Container -->
+        <div id="offersContainer" style="display: none;" class="space-y-6">
+            <!-- Offers will be inserted here -->
         </div>
 
-        <div style="flex: 1; min-width: 200px; text-align: center;">
-            <div style="font-size: 2rem; color: #ffd700; margin-bottom: 10px;">02</div>
-            <h3 style="color: #fff;">Verify</h3>
-            <p style="color: #aaa;">Complete the partner registration or verification task.</p>
+        <!-- Loading State -->
+        <div id="loadingState" class="glass-card rounded-2xl p-6 text-center">
+            <p class="text-zinc-400">🔄 Personalizing your offers...</p>
         </div>
-
-        <div style="flex: 1; min-width: 200px; text-align: center;">
-            <div style="font-size: 2rem; color: #ffd700; margin-bottom: 10px;">03</div>
-            <h3 style="color: #fff;">Unlock</h3>
-            <p style="color: #aaa;">Your rewards are processed and delivered instantly.</p>
-        </div>
-
-    </div>
-</section>
-
-
-<header> ... </header>
-
-<div class="rewards-container"> ... </div>
-
-                Claim Credits
-            </a>
-        </div>
-
-        <div class="glass-card rounded-2xl p-6">
-            <div class="flex justify-between items-start mb-4">
-                <span class="bg-purple-600 text-[10px] font-bold px-2 py-1 rounded uppercase">Live Giveaway</span>
-            </div>
-            <h3 class="text-xl font-bold mb-1">Whatnot Gifting Entry</h3>
-            <p class="text-zinc-400 text-sm mb-6">Join the live giveaway stream and claim your drop.</p>
-            <a href="https://www.lnksforyou.com/view.php?id=5543848&pub=3206303" target="_blank" 
-               class="pulse-btn pulse-anim block w-full bg-purple-600 text-white text-center py-4 rounded-xl font-bold text-lg shadow-lg">
-                Enter Stream
-            </a>
-        </div>
-
-        <div class="glass-card rounded-2xl p-6">
-            <div class="flex justify-between items-start mb-4">
-                <span class="bg-emerald-600 text-[10px] font-bold px-2 py-1 rounded uppercase">Instant Cash</span>
-            </div>
-            <h3 class="text-xl font-bold mb-1">MoneyLion Cash Rewards</h3>
-            <p class="text-zinc-400 text-sm mb-6">Sign up and link your account to unlock current balance.</p>
-            <a href="https://www.lnksforyou.com/view.php?id=5543847&pub=3206303" target="_blank" 
-               class="pulse-btn pulse-anim block w-full bg-emerald-600 text-white text-center py-4 rounded-xl font-bold text-lg shadow-lg">
-                Unlock Balance
-            </a>
-        </div>
-
     </main>
 
-    <a href="mailto:ceoclub.hq@gmail.com?subject=Inquiry: The Rewards Vault" class="fixed bottom-6 left-6 z-50 flex items-center gap-2 bg-zinc-900 border border-zinc-700 px-4 py-3 rounded-full shadow-2xl hover:bg-zinc-800 transition-all active:scale-95 group">
-        <div class="h-2 w-2 bg-blue-500 rounded-full group-hover:animate-pulse"></div>
-        <span class="text-[10px] font-bold tracking-tight text-zinc-300 uppercase">Message CEOCLUB</span>
+    <!-- Footer CTA -->
+    <a href="mailto:brandon@brandonmasonshow.com?subject=Offers%20Feedback" 
+       class="fixed bottom-6 left-6 z-50 flex items-center gap-2 bg-zinc-900 border border-zinc-700 px-4 py-3 rounded-full hover:border-zinc-500 transition-all text-xs md:text-sm"
+       aria-label="Contact support">
+        <div class="h-2 w-2 bg-blue-500 rounded-full animate-pulse"></div>
+        <span class="font-bold tracking-tight text-zinc-300 uppercase">Support</span>
     </a>
 
-    <div id="toast" class="fixed bottom-6 right-6 left-6 md:left-auto md:w-80 glass-card p-4 rounded-xl shadow-2xl translate-y-32 transition-all duration-500 flex items-center gap-3">
+    <!-- Social Proof Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 glass-card p-4 rounded-xl shadow-2xl translate-y-32 transition-all duration-500 flex items-center gap-3 md:w-80" style="width: 280px;">
         <div class="h-2 w-2 bg-emerald-500 rounded-full animate-ping"></div>
-        <p id="toast-text" class="text-[11px] font-medium text-zinc-300"></p>
+        <p id="toast-text" class="text-[11px] md:text-xs font-medium text-zinc-300"></p>
     </div>
 
     <script>
+        // ===== CONTENT LOCKER LOGIC =====
+        const lockerTasks = new Set();
+        const unlockBtn = document.getElementById('unlockBtn');
+        const contentLocker = document.getElementById('contentLocker');
+        const taskCheckboxes = document.querySelectorAll('.task-checkbox');
+
+        taskCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                const task = e.target.dataset.task;
+                if (e.target.checked) {
+                    lockerTasks.add(task);
+                    e.target.closest('.lock-task').classList.add('completed');
+                } else {
+                    lockerTasks.delete(task);
+                    e.target.closest('.lock-task').classList.remove('completed');
+                }
+                updateLockerState();
+            });
+        });
+
+        function updateLockerState() {
+            const completed = lockerTasks.size;
+            const total = 3;
+            
+            if (completed === total) {
+                unlockBtn.disabled = false;
+                unlockBtn.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-zinc-700', 'text-zinc-400');
+                unlockBtn.classList.add('bg-blue-600', 'text-white', 'cursor-pointer', 'hover:bg-blue-700');
+                unlockBtn.textContent = 'Unlock My Personalized Offers →';
+                unlockBtn.setAttribute('aria-label', 'Unlock personalized offers');
+            } else {
+                unlockBtn.disabled = true;
+                unlockBtn.classList.add('opacity-50', 'cursor-not-allowed', 'bg-zinc-700', 'text-zinc-400');
+                unlockBtn.classList.remove('bg-blue-600', 'text-white', 'cursor-pointer', 'hover:bg-blue-700');
+                unlockBtn.textContent = `Complete All Tasks to Unlock (${completed}/${total})`;
+                unlockBtn.setAttribute('aria-label', `Complete all tasks to unlock: ${completed} of ${total} done`);
+            }
+        }
+
+        unlockBtn.addEventListener('click', () => {
+            contentLocker.classList.add('hidden');
+            displayPersonalizedOffers();
+            trackConversion('locker_unlock');
+        });
+
+        // ===== GEO-TARGETING & OFFERS LOGIC =====
+        const offersByCountry = {
+            'US': [
+                {
+                    name: 'MoneyLion Cash Rewards',
+                    desc: 'Sign up and link your account to unlock current balance. US players preferred.',
+                    tag: 'Hot Offer',
+                    color: 'emerald',
+                    link: 'https://www.lnksforyou.com/view.php?id=5543847&pub=3206303&geo=US',
+                    cta: 'Unlock Balance'
+                },
+                {
+                    name: 'Whatnot Gifting Entry',
+                    desc: 'Join the live giveaway stream and claim your drop. Available US-wide.',
+                    tag: 'Live Now',
+                    color: 'purple',
+                    link: 'https://www.lnksforyou.com/view.php?id=5543848&pub=3206303&geo=US',
+                    cta: 'Enter Stream'
+                }
+            ],
+            'CA': [
+                {
+                    name: 'Whatnot Gifting Entry',
+                    desc: 'Join the live giveaway stream - Available in Canada',
+                    tag: 'Live Now',
+                    color: 'purple',
+                    link: 'https://www.lnksforyou.com/view.php?id=5543848&pub=3206303&geo=CA',
+                    cta: 'Enter Stream'
+                },
+                {
+                    name: 'Digital Asset Bundle',
+                    desc: 'Exclusive offer for Canadian Brandon Mason fans',
+                    tag: 'Premium',
+                    color: 'pink',
+                    link: 'https://www.lnksforyou.com/view.php?id=DIGITAL_CA&pub=3206303&geo=CA',
+                    cta: 'Claim Bundle'
+                }
+            ],
+            'GB': [
+                {
+                    name: 'UK Exclusive Rewards',
+                    desc: 'Premium offers tailored for UK audiences',
+                    tag: 'UK Only',
+                    color: 'indigo',
+                    link: 'https://www.lnksforyou.com/view.php?id=UK_REWARDS&pub=3206303&geo=GB',
+                    cta: 'View Offers'
+                }
+            ],
+            'AU': [
+                {
+                    name: 'Australia Exclusive Deals',
+                    desc: 'Premium offers for Australian Brandon Mason viewers',
+                    tag: 'AU Only',
+                    color: 'orange',
+                    link: 'https://www.lnksforyou.com/view.php?id=AU_REWARDS&pub=3206303&geo=AU',
+                    cta: 'View Offers'
+                }
+            ],
+            'DEFAULT': [
+                {
+                    name: 'Global Digital Assets',
+                    desc: 'Verified drops available worldwide',
+                    tag: 'Available',
+                    color: 'blue',
+                    link: 'https://www.lnksforyou.com/view.php?id=GLOBAL&pub=3206303',
+                    cta: 'Explore Offers'
+                }
+            ]
+        };
+
+        function getOffersForGeo(country) {
+            return offersByCountry[country] || offersByCountry['DEFAULT'];
+        }
+
+        function displayPersonalizedOffers() {
+            window.addEventListener('geoReady', renderOffers);
+            if (window.userGeo) renderOffers();
+        }
+
+        function renderOffers() {
+            const { country, state, city } = window.userGeo;
+            const offers = getOffersForGeo(country);
+
+            // Update geo badge
+            const geoInfo = document.getElementById('geoInfo');
+            const geoText = document.getElementById('geoText');
+            geoText.textContent = `${city || state || country}`;
+            geoInfo.style.display = 'inline-block';
+
+            // Hide loading state
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('offersContainer').style.display = 'block';
+
+            const container = document.getElementById('offersContainer');
+            container.innerHTML = '';
+
+            const colorMap = {
+                blue: 'bg-blue-600',
+                emerald: 'bg-emerald-600',
+                purple: 'bg-purple-600',
+                pink: 'bg-pink-600',
+                indigo: 'bg-indigo-600',
+                orange: 'bg-orange-600'
+            };
+
+            offers.forEach((offer, idx) => {
+                const card = document.createElement('div');
+                card.className = 'offer-card glass-card rounded-2xl p-6 transition-all cursor-pointer hover:border-blue-500 active:scale-95';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="${colorMap[offer.color]} text-[10px] font-bold px-2 py-1 rounded uppercase">
+                            ${offer.tag}
+                        </span>
+                        <span class="text-zinc-500 text-xs">📍 Your Region</span>
+                    </div>
+                    <h3 class="text-lg md:text-xl font-bold mb-1">${offer.name}</h3>
+                    <p class="text-zinc-400 text-sm mb-6">${offer.desc}</p>
+                    <a href="${offer.link}&utm_source=brandon_mason&utm_campaign=cpm_2026&utm_medium=landing_page" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       onclick="trackConversion('offer_click', '${offer.name}')"
+                       class="cta-link pulse-btn pulse-anim block w-full ${colorMap[offer.color]} text-white text-center py-3 md:py-4 rounded-xl font-bold text-base md:text-lg shadow-lg hover:opacity-90 active:scale-95"
+                       aria-label="Claim ${offer.name}">
+                        ${offer.cta} →
+                    </a>
+                `;
+                container.appendChild(card);
+            });
+
+            // Add info section
+            const infoSection = document.createElement('div');
+            infoSection.innerHTML = `
+                <section style="padding: 40px 20px; background: #1a1a1a; color: #fff; border-radius: 12px; margin: 20px 0;">
+                    <h2 style="color: #ffd700; margin-bottom: 15px; font-size: 18px;">Why These Offers?</h2>
+                    <p style="line-height: 1.6; color: #cccccc; font-size: 14px;">
+                        We've handpicked offers specifically for Brandon Mason Show viewers in your region. 
+                        All offers are <strong>verified, active, and available right now</strong>.
+                    </p>
+                </section>
+            `;
+            container.appendChild(infoSection);
+
+            startSocialProofToasts();
+        }
+
+        // ===== ANALYTICS & TRACKING =====
+        function trackConversion(event, details = '') {
+            const data = {
+                event: event,
+                details: details,
+                geo: window.userGeo,
+                timestamp: new Date().toISOString(),
+                utm_source: 'brandon_mason_show',
+                utm_campaign: 'cpm_2026',
+                referrer: document.referrer,
+                userAgent: navigator.userAgent
+            };
+
+            // Log to console for debugging
+            console.log('Conversion Tracked:', data);
+
+            // Send to analytics endpoint (if configured)
+            fetch('/api/track', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).catch(e => {
+                // Silently fail - this is expected without a backend endpoint
+                console.debug('Analytics endpoint not configured');
+            });
+        }
+
+        // ===== SOCIAL PROOF TOASTS =====
         const userPool = [
-            { name: "Lukas Schmidt", handle: "lks_schmidt" },
-            { name: "Emma Wilson", handle: "em_wilson22" },
-            { name: "Matteo Rossi", handle: "m_rossi_it" },
-            { name: "Sophie Dubois", handle: "soph_dubois" },
-            { name: "Erik Lindgren", handle: "erik_l88" },
-            { name: "Julian H.", handle: "jules_h" },
-            { name: "Hannah Vogel", handle: "h_vogel_de" },
-            { name: "David Miller", handle: "miller_d" },
-            { name: "Elena S.", handle: "elena_silver" },
-            { name: "Marc Baumann", handle: "baumann_m" },
-            { name: "Oliver P.", handle: "oliver_p_uk" },
-            { name: "Clara Müller", handle: "clara_m" },
-            { name: "Thomas W.", handle: "tw_pro" },
-            { name: "Isabella K.", handle: "bella_k_ny" },
-            { name: "Niklas Hofmann", handle: "n_hofmann" },
-            { name: "Sarah Jones", handle: "sj_rewards" },
-            { name: "Lars Nielsen", handle: "lars_n_dk" },
-            { name: "Andreas Kohl", handle: "a_kohl" },
-            { name: "Julia Schneider", handle: "j_schneider" },
-            { name: "B. Livingston", handle: "b_livingston_us" }
+            { name: "Alex Chen", handle: "alexchen_" },
+            { name: "Mason Rivera", handle: "mason_rv" },
+            { name: "Jordan Lee", handle: "jordanlee92" },
+            { name: "Casey Smith", handle: "caseysm_" },
+            { name: "Taylor Brown", handle: "tbrownmedia" },
+            { name: "Morgan Green", handle: "morgangreen_co" },
+            { name: "Quinn Davis", handle: "quindavis_" },
+            { name: "Riley Tech", handle: "rileytech_" },
+            { name: "Skylar Jones", handle: "skylarcodes" },
+            { name: "Brandon Fan", handle: "brandonshow_fan" }
         ];
 
         const actions = [
-            "secured a $25 MoneyLion reward",
-            "registered for Jackpota Casino credits",
-            "entered the Whatnot gifting giveaway",
-            "verified a $10 MoneyLion cash drop",
-            "unlocked initial Jackpota entry credits",
-            "joined the Whatnot live stream event"
+            "unlocked exclusive offers",
+            "claimed their regional deal",
+            "completed the verification",
+            "accessed premium content",
+            "entered the giveaway"
         ];
 
-        const toast = document.getElementById('toast');
-        const toastText = document.getElementById('toast-text');
-
         function showToast() {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toast-text');
             const user = userPool[Math.floor(Math.random() * userPool.length)];
             const action = actions[Math.floor(Math.random() * actions.length)];
             
@@ -165,18 +574,15 @@
             }, 4500);
         }
 
-        function scheduleNext() {
-            // Natural random delay between 14 and 22 seconds
-            const randomDelay = Math.floor(Math.random() * (22000 - 14000 + 1) + 14000);
-            setTimeout(() => {
+        function startSocialProofToasts() {
+            showToast();
+            setInterval(() => {
                 showToast();
-                scheduleNext();
-            }, randomDelay);
+            }, 18000);
         }
 
-        // Start initial cycle after 6 seconds
-        setTimeout(scheduleNext, 6000);
+        // Track page load
+        trackConversion('page_load');
     </script>
 </body>
 </html>
-
